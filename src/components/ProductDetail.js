@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import apiCall from '../api/apiCall'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { seelectedProduct } from '../redux/actions/productAction';
+import { seelectedProduct , fetchIndividualProducts, addToCart} from '../redux/actions/productAction';
+
 const URL = 'https://fakestoreapi.com/products';
 
 
@@ -14,23 +15,30 @@ function ProductDetail(props) {
     const { pid } = useParams();
     const {id,title,category, price, image, description} = product
 
-    
+   
 
-    const fetchProducts = async () => {
-        try {
-            const response = await apiCall.get(`/products/${pid}`); 
-            dispatch(seelectedProduct(response.data))
-        } catch (error) {
-            console.error('Error fetching product:', error);
-        }
-    };
-    console.log(product)
+    // const fetchProducts = async () => {
+    //     try {
+    //         const response = await apiCall.get(`/products/${pid}`); 
+    //         dispatch(seelectedProduct(response.data))
+    //     } catch (error) {
+    //         console.error('Error fetching product:', error);
+    //     }
+    // };
+
     useEffect(() => {
-        fetchProducts();
+        dispatch(fetchIndividualProducts(pid))
     }, [pid]); 
    
     const navigate = useNavigate();
 
+    const handleaddtoCart = () => {
+        const cartProduct = {id,title};
+        console.log('Current product to add:', cartProduct);
+        dispatch(addToCart(cartProduct));  
+    }
+    const cart = useSelector(state=>state.cart);
+    console.log(cart);
     const goToProductDetail = (id) => {
         navigate(`/`);
     };
@@ -53,7 +61,7 @@ function ProductDetail(props) {
                         </h2>
                         <h3 className='ui brown block header'>{category}</h3>
                         <p>{description}</p>
-                        <div className='ui vertical animated button' tabIndex='0'>
+                        <div className='ui vertical animated button' tabIndex='0' onClick={handleaddtoCart}>
                             <div className='hidden content'>
                                 <i className='shop icon'></i>
                             </div>

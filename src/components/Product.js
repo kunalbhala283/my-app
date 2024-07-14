@@ -1,41 +1,52 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
-import {Link} from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart } from '../redux/actions/productAction';
+import { Link } from 'react-router-dom';
+
 function Product(props) {
-    const products = useSelector(state => state.allProducts.products)
+    const products = useSelector(state => state.allProducts.products);
+    const dispatch = useDispatch();
+
+    const handleAddToCart = (id, title) => {
+        const cartProduct = { id, title };
+        console.log('Current product to add:', cartProduct);
+        dispatch(addToCart(cartProduct));
+    };
 
     const renderList = products.map((product) => {
-        const { id, title, category, image, price } = product
+        const { id, title, category, image, price } = product;
 
         return (
             <div className='four wide column' key={id}>
                 <Link to={`/product/${id}`}>
-                <div className='ui link cards'>
-                    <div className='card'>
-                        <div className='image'>
-                            <img src={image} />
-                        </div>
-                        <div className='content'>
-                            <div className='header'>{title}</div>
-                            <div className='meta price'>${price}</div>
-                            <div className='meta'>{category}</div>
-                            <div className='ui vertical animated button' tabIndex='0'>
-                            <div className='hidden content '>
-                                <i className='shop icon'></i>
+                    <div className='ui link cards'>
+                        <div className='card'>
+                            <div className='image'>
+                                <img src={image} alt={title} />
                             </div>
-                            <div className='visible content'>Add To Cart</div>
-                        </div>
+                            <div className='content'>
+                                <div className='header'>{title}</div>
+                                <div className='meta price'>${price}</div>
+                                <div className='meta'>{category}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </Link>
-            </div>
+                <div onClick={() => handleAddToCart(id, title)} className='ui vertical animated button' tabIndex='0'>
+                    <div className='hidden content'>
+                        <i className='shop icon'></i>
+                    </div>
+                    <div className='visible content'>Add To Cart</div>
+                </div>
+            </div >
         );
+    });
 
-    })
-    return <>
-        {renderList}
-    </>
+    return (
+        <>
+            {renderList}
+        </>
+    );
 }
 
 export default Product;
