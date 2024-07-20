@@ -12,12 +12,12 @@ export const setProducts = (products) => {
 
 export const fetchProducts =()=> async (dispatch) => {
    
-    const response = await apiCall.get('/products')
+    const response = await apiCall.get('/loaddata')
     dispatch({type:ActionTypes.FETCH_PRODUCTS, payload:response.data})
 }
 
 export const fetchIndividualProducts = (pid) => async(dispatch)=>{
-    const response = await apiCall.get(`/products/${pid}`)
+    const response = await apiCall.get(`/loaddata/${pid}`)
     dispatch({type:ActionTypes.SELECTED_PRODUCT, payload:response.data})
 
 }

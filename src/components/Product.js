@@ -7,18 +7,18 @@ function Product(props) {
     const products = useSelector(state => state.allProducts.products);
     const dispatch = useDispatch();
 
-    const handleAddToCart = (id, title) => {
-        const cartProduct = { id, title };
+    const handleAddToCart = (_id, title) => {
+        const cartProduct = { _id, title };
         console.log('Current product to add:', cartProduct);
         dispatch(addToCart(cartProduct));
     };
 
     const renderList = products.map((product) => {
-        const { id, title, category, image, price } = product;
-
+        const { _id, title, category, image, price } = product;
+        console.log(_id);
         return (
-            <div className='four wide column' key={id}>
-                <Link to={`/product/${id}`}>
+            <div className='four wide column' key={_id}>
+                <Link to={`/product/${_id}`}>
                     <div className='ui link cards'>
                         <div className='card'>
                             <div className='image'>
@@ -32,7 +32,7 @@ function Product(props) {
                         </div>
                     </div>
                 </Link>
-                <div onClick={() => handleAddToCart(id, title)} className='ui vertical animated button' tabIndex='0'>
+                <div onClick={() => handleAddToCart(_id, title)} className='ui vertical animated button' tabIndex='0'>
                     <div className='hidden content'>
                         <i className='shop icon'></i>
                     </div>
